@@ -19,12 +19,6 @@ const SignUpForm = ({
   t,
 }) => (
   <Form
-    data={{
-      email: '',
-      name: '',
-      company: '',
-      password: '',
-    }}
     errors={errors}
     validation={{
       company: isRequired(t),
@@ -77,6 +71,7 @@ const SignUpForm = ({
 
 SignUpForm.defaultProps = {
   errors: null,
+  loading: false,
 }
 
 SignUpForm.propTypes = {
