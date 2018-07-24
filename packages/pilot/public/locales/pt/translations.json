@@ -950,6 +950,8 @@
     },
     "transactions": {
       "count": "transações",
+      "export_table": "Exportar tabela",
+      "export_to": "Exportar para:",
       "graphic": "Gráfico",
       "graphic_legends": "Legendas",
       "items_per_page_plural": "{{count}} itens por página",
