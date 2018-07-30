@@ -98,6 +98,11 @@ const AccountArea = ({ t, history: { location } }) => {
 
 AccountArea.propTypes = {
   t: PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    location: PropTypes.shape({
+      pathname: PropTypes.string,
+    }),
+  }).isRequired,
 }
 
 export default enhance(AccountArea)
