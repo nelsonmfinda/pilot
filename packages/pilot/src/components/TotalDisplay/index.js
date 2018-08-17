@@ -66,6 +66,7 @@ const TotalDisplay = ({
   title,
   titleColor,
   titleSize,
+  valueSize,
 }) => (
   <DataDisplay
     align={align}
@@ -73,6 +74,7 @@ const TotalDisplay = ({
     subtitle={subtitle}
     title={renderTitle(title, titleColor, color, titleSize)}
     titleSize={titleSize}
+    valueSize={valueSize}
   >
     {renderValue(amount, amountSize, color)}
   </DataDisplay>
@@ -101,6 +103,12 @@ TotalDisplay.propTypes = {
     'medium',
     'small',
   ]),
+  valueSize: PropTypes.oneOf([
+    'huge',
+    'large',
+    'medium',
+    'small',
+  ]),
 }
 
 TotalDisplay.defaultProps = {
@@ -109,6 +117,7 @@ TotalDisplay.defaultProps = {
   subtitle: null,
   titleColor: null,
   titleSize: 'small',
+  valueSize: 'medium',
 }
 
 export default TotalDisplay
