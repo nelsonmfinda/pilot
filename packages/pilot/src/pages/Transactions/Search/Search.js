@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { translate } from 'react-i18next'
 import qs from 'qs'
+import XLSX from 'xlsx'
 import {
   __,
   append,
@@ -136,6 +137,34 @@ const parseQueryUrl = pipe(
   mergeAll
 )
 
+const handleCSVExportDownloadingClick = (data, filename) => {
+  const downloadLink = document.createElement('a')
+  downloadLink.target = '_blank'
+  downloadLink.download = filename.concat('csv')
+
+  const blob = new Blob([data], { type: 'application/vnd.ms-excel' })
+
+  const URL = window.URL || window.webkitURL
+  const downloadUrl = URL.createObjectURL(blob)
+
+  downloadLink.href = downloadUrl
+
+  document.body.append(downloadLink)
+
+  downloadLink.click()
+
+  document.body.removeChild(downloadLink)
+  URL.revokeObjectURL(downloadUrl)
+}
+
+const handleXLSExportDownloadingClick = (data, filename) => {
+  const workSheetName = 'sheetJS'
+  const newWorkSheet = XLSX.utils.book_new()
+  const dataWorkSheet = XLSX.utils.aoa_to_sheet(data)
+  XLSX.utils.book_append_sheet(newWorkSheet, dataWorkSheet, workSheetName)
+
+  XLSX.writeFile(newWorkSheet, filename.concat('xls'))
+}
 
 class TransactionsSearch extends React.Component {
   constructor (props) {
@@ -148,7 +177,6 @@ class TransactionsSearch extends React.Component {
     this.handleRowDetailsClick = this.handleRowDetailsClick.bind(this)
     this.handleRowClick = this.handleRowClick.bind(this)
     this.handleExpandRow = this.handleExpandRow.bind(this)
-    this.handleExport = this.handleExport.bind(this)
     this.handlePendingReviewsFilter = this.handlePendingReviewsFilter.bind(this)
     this.handleSelectRow = this.handleSelectRow.bind(this)
     this.requestData = this.requestData.bind(this)
@@ -372,14 +400,18 @@ class TransactionsSearch extends React.Component {
     })
   }
 
-  handleExport (exportData) {
+  handleExport (exportType) {
     const newQuery = { ...this.state.query, count: this.state.result.total.count }
     return this.props.client
       .transactions
-      .exportData(newQuery)
+      .exportData(newQuery, exportType)
       .then((res) => {
-        console.log('arg', exportData)
-        console.log('result', res)
+        const filename = `Pagarme - ${moment().format('LLL')}.`
+        if (exportType === 'csv') {
+          handleCSVExportDownloadingClick(res, filename)
+        } else {
+          handleXLSExportDownloadingClick(res, filename)
+        }
       })
   }
 
