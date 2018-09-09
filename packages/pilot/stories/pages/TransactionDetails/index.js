@@ -156,4 +156,3 @@ storiesOf('Pages|Transaction', module)
       />
     </Layout>
   ))
-
