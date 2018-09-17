@@ -91,16 +91,11 @@ SignUpForm.propTypes = {
   ]),
   loading: PropTypes.bool,
   onSubmit: PropTypes.func.isRequired,
-<<<<<<< HEAD
   t: PropTypes.func.isRequired,
-=======
-  t: PropTypes.func,
 }
 
 SignUpForm.defaultProps = {
   loading: false,
-  t: t => t,
->>>>>>> company: add signup request
 }
 
 export default SignUpForm
