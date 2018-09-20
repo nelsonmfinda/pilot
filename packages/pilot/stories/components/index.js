@@ -1,6 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 
+import AutoSuggestion from './AutoSuggestionInput'
 import BoletoRefundDetails from './BoletoRefundDetails'
 import ConfigurationCardForm from './ConfigurationCardForm'
 import CopyButton from './CopyButton'
@@ -31,6 +32,7 @@ import Loader from './Loader'
 import Message from './Message'
 
 storiesOf('Components', module)
+  .add('auto suggestion input', () => <AutoSuggestion />)
   .add('Configuration card form', () => <ConfigurationCardForm />)
   .add('Copy button', () => <CopyButton />)
   .add('Currency Input', () => <CurrencyInput />)
