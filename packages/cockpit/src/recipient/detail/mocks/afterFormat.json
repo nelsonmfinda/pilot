@@ -1,0 +1,9 @@
+{
+  "automatic_anticipation_type": "full",
+  "automatic_anticipation_days": null,
+  "anticipatable_volume_percentage": 85,
+  "transfer_enabled": true,
+  "transfer_interval": "weekly",
+  "transfer_day": 5,
+  "id": "ak_test_mik9xi1mCnCQa08H7peAF1J81XqeId"
+}
