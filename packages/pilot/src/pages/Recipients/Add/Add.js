@@ -11,6 +11,7 @@ const mapStateToProps = (state) => {
   const { account } = state
   const { client, company } = account
   const { anticipation_config: anticipationConfig } = company || {}
+  console.log(anticipationConfig)
 
   let {
     config_anticipation_params: anticipation,
