@@ -12,7 +12,6 @@ import {
   Button,
   Col,
   CardActions,
-  CardContent,
   FormDropdown,
   FormInput,
   RadioGroup,
@@ -137,7 +136,7 @@ class ClientForm extends Component {
         }}
         validateOn="blur"
       >
-        <CardContent>
+        <div className={style.formContent}>
           <Row>
             <Col palm={4} tablet={4} desk={2} tv={2}>
               <FormInput
@@ -214,7 +213,7 @@ class ClientForm extends Component {
               />
             </Col>
           </Row>
-        </CardContent>
+        </div>
 
         <CardActions>
           <Button
@@ -247,8 +246,8 @@ ClientForm.propTypes = {
     phone: PropTypes.string,
     type: PropTypes.oneOf([
       'corporation', 'individual',
-    ]).isRequired,
-  }).isRequired,
+    ]),
+  }),
   onCancel: PropTypes.func.isRequired,
   onChange: PropTypes.func,
   onSubmit: PropTypes.func.isRequired,
@@ -256,6 +255,9 @@ ClientForm.propTypes = {
 }
 
 ClientForm.defaultProps = {
+  customer: {
+    type: 'individual',
+  },
   onChange: null,
 }
 
