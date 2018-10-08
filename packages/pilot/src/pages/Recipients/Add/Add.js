@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { compose } from 'ramda'
 
+import { requestLogout } from '../../Account/actions'
 import AddRecipient from '../../../../src/containers/AddRecipient'
 
 const mapStateToProps = (state) => {
@@ -31,8 +32,12 @@ const mapStateToProps = (state) => {
   }
 }
 
+const mapDispatchToProp = ({
+  redirectToLoginPage: requestLogout,
+})
+
 const enhanced = compose(
-  connect(mapStateToProps),
+  connect(mapStateToProps, mapDispatchToProp),
   translate(),
   withRouter
 )
@@ -43,12 +48,17 @@ class AddRecipientPage extends Component {
 
     this.fetchAccounts = this.fetchAccounts.bind(this)
     this.onExit = this.onExit.bind(this)
+    this.onLoginAgain = this.onLoginAgain.bind(this)
     this.onViewDetails = this.onViewDetails.bind(this)
     this.submitRecipient = this.submitRecipient.bind(this)
   }
 
   onExit () {
     this.props.history.replace('/recipients')
+  }
+
+  onLoginAgain () {
+    this.props.redirectToLoginPage()
   }
 
   onViewDetails (recipientId) {
@@ -69,6 +79,7 @@ class AddRecipientPage extends Component {
       <AddRecipient
         fetchAccounts={this.fetchAccounts}
         onExit={this.onExit}
+        onLoginAgain={this.onLoginAgain}
         onViewDetails={this.onViewDetails}
         options={this.props.options}
         submitRecipient={this.submitRecipient}
@@ -89,6 +100,7 @@ AddRecipientPage.propTypes = {
     canConfigureAnticipation: PropTypes.bool,
     minimumAnticipationDays: PropTypes.number,
   }).isRequired,
+  redirectToLoginPage: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
   history: PropTypes.shape({
     replace: PropTypes.func,
