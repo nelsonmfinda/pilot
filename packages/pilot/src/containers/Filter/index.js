@@ -11,7 +11,6 @@ import {
   Row,
   Col,
   CheckboxGroup,
-  Spacing,
 } from 'former-kit'
 
 import Form from 'react-vanilla-form'
@@ -114,40 +113,43 @@ class Filters extends Component {
 
     return (
       <CardActions>
-        {ensureArray(children).map(this.renderChildrenInput)}
-        {!isNilOrEmpty(options) &&
+        <div className={style.content}>
+          {ensureArray(children).map(this.renderChildrenInput)}
+          {!isNilOrEmpty(options) &&
+            <Button
+              disabled={this.props.disabled}
+              relevance="low"
+              fill="outline"
+              iconAlignment="end"
+              icon={collapsed
+                ? <ChevronDown32 width={16} height={16} />
+                : <ChevronUp32 width={16} height={16} />
+              }
+              onClick={this.handleToogeMoreFilters}
+            >
+              {t('components.filter.more')}
+            </Button>
+          }
+        </div>
+        <div className={style.content}>
           <Button
-            disabled={this.props.disabled}
-            relevance="low"
+            relevance={filtersChanged ? 'normal' : 'low'}
+            onClick={onClear}
             fill="outline"
-            iconAlignment="end"
-            icon={collapsed
-              ? <ChevronDown32 width={16} height={16} />
-              : <ChevronUp32 width={16} height={16} />
-            }
-            onClick={this.handleToogeMoreFilters}
+            disabled={this.props.disabled}
           >
-            {t('components.filter.more')}
+            {t('components.filter.reset')}
           </Button>
-        }
-        <Spacing size="large" />
-        <Button
-          relevance={filtersChanged ? 'normal' : 'low'}
-          onClick={onClear}
-          fill="outline"
-          disabled={this.props.disabled}
-        >
-          {t('components.filter.reset')}
-        </Button>
 
-        <Button
-          relevance={filtersChanged ? 'normal' : 'low'}
-          disabled={!filtersChanged || this.props.disabled}
-          type="submit"
-          fill="gradient"
-        >
-          {t('components.filter.apply')}
-        </Button>
+          <Button
+            relevance={filtersChanged ? 'normal' : 'low'}
+            disabled={!filtersChanged || this.props.disabled}
+            type="submit"
+            fill="gradient"
+          >
+            {t('components.filter.apply')}
+          </Button>
+        </div>
       </CardActions>
     )
   }

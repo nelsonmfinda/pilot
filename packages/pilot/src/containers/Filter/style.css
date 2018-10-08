@@ -5,6 +5,23 @@
   overflow: initial;
 }
 
+.content {
+  display: flex;
+  flex: 1;
+
+  & > *:not(:first-child) {
+    margin-left: var(--spacing-small);
+  }
+
+  & input {
+    min-width: 322px;
+  }
+
+  &:last-child {
+    justify-content: flex-end;
+  }
+}
+
 .selectedOptionsTitle {
   font-size: 14px;
   text-transform: uppercase;
