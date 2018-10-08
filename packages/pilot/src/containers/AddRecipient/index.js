@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Card, Steps } from 'former-kit'
+import { pathOr } from 'ramda'
+
 import IdentificationStep from './IdentificationStep'
 import BankAccountStep from './BankAccountStep'
 import ConfigurationStep from './ConfigurationStep'
@@ -34,7 +36,7 @@ class AddRecipients extends Component {
     this.state = {
       currentStepNumber: 0,
       data: {},
-      error: false,
+      fetchError: false,
       fetchData: {},
       isLoading: false,
       openModal: false,
@@ -117,7 +119,7 @@ class AddRecipients extends Component {
       .catch((fetchError) => {
         this.setState({
           currentStepNumber: nextStepNumber,
-          error: fetchError,
+          fetchError,
           isLoading: false,
           stepsStatus,
         })
@@ -139,7 +141,7 @@ class AddRecipients extends Component {
     this.setState({
       currentStepNumber: 0,
       data: {},
-      error: false,
+      fetchError: false,
       fetchData: {},
       stepsStatus: [...initialStepStatus],
     })
@@ -266,16 +268,30 @@ class AddRecipients extends Component {
     }
   }
 
-  renderError () {
-    const { onExit, t } = this.props
+  renderError (fetchError) {
+    const {
+      onExit,
+      onLoginAgain,
+      t,
+    } = this.props
+
+    const getErrorCode = pathOr(0, ['response', 'status'])
+    const errorCode = getErrorCode(fetchError)
+
     return (
-      <ErrorStep onExit={onExit} onTryAgain={this.handleTryAgain} t={t} />
+      <ErrorStep
+        errorCode={errorCode}
+        onExit={onExit}
+        onLoginAgain={onLoginAgain}
+        onTryAgain={this.handleTryAgain}
+        t={t}
+      />
     )
   }
 
   render () {
     const {
-      error,
+      fetchError,
       isLoading,
       openModal,
       stepsStatus,
@@ -294,8 +310,8 @@ class AddRecipients extends Component {
         </Card>
         <Card className={style.marginTop}>
           {
-            (error)
-              ? this.renderError()
+            (fetchError)
+              ? this.renderError(fetchError)
               : this.renderStep()
           }
         </Card>
@@ -319,6 +335,7 @@ class AddRecipients extends Component {
 AddRecipients.propTypes = {
   fetchAccounts: PropTypes.func.isRequired,
   onExit: PropTypes.func.isRequired,
+  onLoginAgain: PropTypes.func.isRequired,
   onViewDetails: PropTypes.func.isRequired,
   options: PropTypes.shape({
     canConfigureAnticipation: PropTypes.bool,
