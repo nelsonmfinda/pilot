@@ -10,20 +10,38 @@ import AddRecipient from '../../../../src/containers/AddRecipient'
 
 const mapStateToProps = (state) => {
   const { account } = state
-  const { client, company } = account
+  const { client, company, user } = account
   const { anticipation_config: anticipationConfig } = company || {}
 
   let {
-    config_anticipation_params: anticipation,
-    minimum_delay: delay,
+    config_anticipation_params: canConfigureAnticipation,
+    minimum_delay: minimumAnticipationDelay,
+    max_anticipation_days: maximumAnticipationDays,
   } = anticipationConfig || {}
 
-  if (anticipation === undefined) anticipation = true
-  if (delay === undefined) delay = 15
+  let { permission: userPermission } = user || {}
+
+  if (canConfigureAnticipation === undefined) {
+    canConfigureAnticipation = true
+  }
+
+  if (minimumAnticipationDelay === undefined) {
+    minimumAnticipationDelay = 15
+  }
+
+  if (userPermission === undefined) {
+    userPermission = 'admin'
+  }
+
+  if (maximumAnticipationDays === undefined) {
+    maximumAnticipationDays = 32
+  }
 
   const options = {
-    canConfigureAnticipation: anticipation,
-    minimumAnticipationDays: delay,
+    canConfigureAnticipation,
+    maximumAnticipationDays,
+    minimumAnticipationDelay,
+    userPermission,
   }
 
   return {
@@ -98,7 +116,9 @@ AddRecipientPage.propTypes = {
   }).isRequired,
   options: PropTypes.shape({
     canConfigureAnticipation: PropTypes.bool,
-    minimumAnticipationDays: PropTypes.number,
+    maximumAnticipationDays: PropTypes.number,
+    minimumAnticipationDelay: PropTypes.number,
+    userPermission: PropTypes.string,
   }).isRequired,
   redirectToLoginPage: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,

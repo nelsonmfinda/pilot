@@ -117,6 +117,8 @@ class AddRecipients extends Component {
         })
       })
       .catch((fetchError) => {
+        // TODO: definir o tipo de erro aqui, pois o erro pode não
+        // vir de um fetch (userPermission)
         this.setState({
           currentStepNumber: nextStepNumber,
           fetchError,
@@ -339,7 +341,9 @@ AddRecipients.propTypes = {
   onViewDetails: PropTypes.func.isRequired,
   options: PropTypes.shape({
     canConfigureAnticipation: PropTypes.bool,
-    minimumAnticipationDays: PropTypes.number,
+    maximumAnticipationDays: PropTypes.number,
+    minimumAnticipationDelay: PropTypes.number,
+    userPermission: PropTypes.string,
   }),
   submitRecipient: PropTypes.func.isRequired,
   t: PropTypes.func.isRequired,
@@ -347,8 +351,11 @@ AddRecipients.propTypes = {
 
 AddRecipients.defaultProps = {
   options: {
+    // TODO: propagate changes
     canConfigureAnticipation: true,
-    minimumAnticipationDays: 15,
+    maximumAnticipationDays: 32,
+    minimumAnticipationDelay: 15,
+    userPermission: 'admin',
   },
 }
 
